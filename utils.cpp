@@ -1,5 +1,6 @@
 #include "utils.h"
 #include "constants.h"
+#include <algorithm>
 #include <fstream>
 #include <stdexcept>
 /*
@@ -69,4 +70,20 @@ std::vector<storageItemSpace::storageItem> loadStorageItemsFromFile(std::istream
 		}
 	}
 	return data;
+}
+
+bool isValidChoice(const std::vector<int>& validChoices, const int& choice) {
+	//for (const auto& vc : validChoices) {
+	//	if (vc == choice) {
+	//		return true;
+	//	}
+	//}
+
+	//return false;
+
+	//this is the "smart" alternative
+	//we iterate from begin() [pointer from first elem]
+	//to end() [pointer one pos after last elem]
+	//to find choice, if not found we get .end() hence false [as per !=]
+	return std::find(validChoices.begin(), validChoices.end(), choice) != validChoices.end();
 }
