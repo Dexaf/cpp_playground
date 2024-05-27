@@ -132,6 +132,7 @@
     <ClCompile Include="storageItem.cpp" />
     <ClCompile Include="storageItem.h" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="tree.h" />
     <ClCompile Include="utils.cpp" />
   </ItemGroup>
   <ItemGroup>

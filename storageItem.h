@@ -1,5 +1,5 @@
-#ifndef STRUCTS
-#define STRUCTS
+#ifndef STORAGEITEMS
+#define STORAGEITEMS
 #include <string>
 #include <vector>
 
@@ -14,6 +14,7 @@ namespace storageItemSpace {
 	class StorageItemContainer {
 	private:
 		std::vector<storageItemSpace::storageItem> _data{};
+
 	public:
 		StorageItemContainer() = default;
 
@@ -24,9 +25,10 @@ namespace storageItemSpace {
 		//Move assignment
 		StorageItemContainer& operator=(std::vector<storageItemSpace::storageItem>&& data);
 
-
 		//METHODS
 		void printStorageItems();
+
+		const std::vector<storageItemSpace::storageItem>& getData();
 	};
 }
 #endif

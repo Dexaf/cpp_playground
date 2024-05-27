@@ -1,4 +1,5 @@
 #include "utils.h"
+#include "tree.h"
 #include "constants.h"
 #include "storageItem.h"
 #include <stdio.h>
@@ -46,5 +47,27 @@ int main() {
 			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 		}
 	}
+
+	auto treeRoot = std::move(makeTreeFromVect(storageItems.getData(), &storageItemSpace::storageItem::name));
+
+
+	//assegnare dinamicamente??
+	switch (choice)
+	{
+	case 1:
+		std::move(makeTreeFromVect(storageItems.getData(), &storageItemSpace::storageItem::name));
+		break;
+	case 2:
+		std::move(makeTreeFromVect(storageItems.getData(), &storageItemSpace::storageItem::code));
+		break;
+	case 3:
+		std::move(makeTreeFromVect(storageItems.getData(), &storageItemSpace::storageItem::qta));
+		break;
+	case 4:
+		std::move(makeTreeFromVect(storageItems.getData(), &storageItemSpace::storageItem::price));
+		break;
+	}
+
+	//fixa il print
 	storageItems.printStorageItems();
 }

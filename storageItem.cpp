@@ -1,6 +1,7 @@
 #include "storageItem.h"
 #include <iostream>
 #include <iomanip>
+#include <vector>
 
 using namespace storageItemSpace;
 
@@ -12,7 +13,6 @@ StorageItemContainer& StorageItemContainer::operator=(std::vector<storageItem>&&
 	//to allow conc
 	return *this;
 }
-
 //we use & for storageItems to pass the reference and not a copy
 void StorageItemContainer::printStorageItems()
 {
@@ -45,4 +45,9 @@ void StorageItemContainer::printStorageItems()
 			<< std::setw(priceWidth) << storageItem.price
 			<< '\n';
 	}
+};
+
+const std::vector<storageItemSpace::storageItem>& StorageItemContainer::getData()
+{
+	return this->_data;
 };
