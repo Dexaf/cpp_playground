@@ -2,6 +2,8 @@
 #define STORAGEITEMS
 #include <string>
 #include <vector>
+#include <iostream>
+#include <iomanip>
 
 namespace storageItemSpace {
 	struct storageItem {
@@ -31,4 +33,7 @@ namespace storageItemSpace {
 		const std::vector<storageItemSpace::storageItem>& getData();
 	};
 }
+
+//Cout overload
+std::ostream& operator<<(std::ostream& os, const storageItemSpace::storageItem& si);
 #endif

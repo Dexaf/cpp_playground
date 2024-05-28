@@ -56,7 +56,6 @@ std::vector<storageItemSpace::storageItem> loadStorageItemsFromFile(std::istream
 			break;
 		}
 
-
 		int filePeek{ file.peek() };
 		if (filePeek == '\n' || filePeek == EOF) {
 			//uh oh not enough data

@@ -5,6 +5,7 @@
 #include <iostream>
 #include <stdio.h>
 #include <optional>
+#include "storageItem.h"
 
 template <typename T>
 class TreeNode {
@@ -68,6 +69,35 @@ public:
 	void setRChild(TreeNode<T>* child) {
 		this->_rChild = child;
 	}
+	//METHODS
+	//Print the tree in order using ordered deep search
+	/*
+		ex: if we have R:5 lc:3 rc:4
+
+		- we check if lc exists
+		- yes, call the fn passing lc
+		- we check if there's a child
+		- no so we print ourself -> 3
+		- we go back to 5
+		- we check if rc exists
+		- yes, call the fn passing rc
+		- we check if there's a child
+		- no so we print ourself -> 4
+		- we go back to 5
+		- ifs ended, we print ourself -> 5
+	*/
+	static void orderedPrint(TreeNode<T>* currNode) {
+		//if there's a sx child we go there
+		if (currNode->_lChild) {
+			orderedPrint(currNode->_lChild);
+		}
+		//if there's a sx child we go there
+		if (currNode->_rChild) {
+			orderedPrint(currNode->_rChild);
+		}
+		//in the end we printourselfs
+		std::cout << *(currNode->_self) << '\n';
+	}
 };
 
 //NOTE T::* points to a member of a field (ex root.*memberField)
@@ -91,13 +121,15 @@ std::unique_ptr<TreeNode<T>> makeTreeFromVect(const std::vector<T>& rootElemVect
 		auto& parMemberField{ parentForElem->getSelf()->*memberField };
 		auto& childMemberField{ currElemRef.*memberField };
 
+		//TODO - string fileds need to be confronted with .compare which gives < 0 if smaller 
+		//		 i should make a fn to confront with specializations for string
 		//congratulations! it's a right child!
 		if (parMemberField > childMemberField) {
-			parentForElem->setRChild(new TreeNode<T>{ &currElemRef }); //se lo passiamo cosi non muore???
+			parentForElem->setLChild(new TreeNode<T>{ &currElemRef }); //se lo passiamo cosi non muore???
 		}
 		else {
 			//congratulations! it's a left child!
-			parentForElem->setLChild(new TreeNode<T>{ &currElemRef });
+			parentForElem->setRChild(new TreeNode<T>{ &currElemRef });
 		}
 		//go to next
 		vectIter++;
@@ -118,18 +150,18 @@ TreeNode<T>* getParent(TreeNode<T>* currParent, MemberField T::* confrontMemberF
 		mirrored for the left child
 	*/
 	if (*(currParentSelf).*confrontMemberField > child.*confrontMemberField) {
-		TreeNode<T>* currRChild{ currParent->getRChild() };
-		if (currRChild) {
-			return getParent(currRChild, confrontMemberField, child);
+		TreeNode<T>* currLChild{ currParent->getLChild() };
+		if (currLChild) {
+			return getParent(currLChild, confrontMemberField, child);
 		}
 		else {
 			return currParent;
 		}
 	}
 	else {
-		TreeNode<T>* currLChild{ currParent->getLChild() };
-		if (currLChild) {
-			return getParent(currLChild, confrontMemberField, child);
+		TreeNode<T>* currRChild{ currParent->getRChild() };
+		if (currRChild) {
+			return getParent(currRChild, confrontMemberField, child);
 		}
 		else {
 			return currParent;

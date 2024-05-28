@@ -48,26 +48,47 @@ int main() {
 		}
 	}
 
-	auto treeRoot = std::move(makeTreeFromVect(storageItems.getData(), &storageItemSpace::storageItem::name));
-
+	std::unique_ptr<TreeNode<storageItemSpace::storageItem>> treeRootPntr = nullptr;
 
 	//assegnare dinamicamente??
 	switch (choice)
 	{
 	case 1:
-		std::move(makeTreeFromVect(storageItems.getData(), &storageItemSpace::storageItem::name));
+		treeRootPntr = std::move(makeTreeFromVect(storageItems.getData(), &storageItemSpace::storageItem::name));
 		break;
 	case 2:
-		std::move(makeTreeFromVect(storageItems.getData(), &storageItemSpace::storageItem::code));
+		treeRootPntr = std::move(makeTreeFromVect(storageItems.getData(), &storageItemSpace::storageItem::code));
 		break;
 	case 3:
-		std::move(makeTreeFromVect(storageItems.getData(), &storageItemSpace::storageItem::qta));
+		treeRootPntr = std::move(makeTreeFromVect(storageItems.getData(), &storageItemSpace::storageItem::qta));
 		break;
 	case 4:
-		std::move(makeTreeFromVect(storageItems.getData(), &storageItemSpace::storageItem::price));
+		treeRootPntr = std::move(makeTreeFromVect(storageItems.getData(), &storageItemSpace::storageItem::price));
 		break;
 	}
 
-	//fixa il print
-	storageItems.printStorageItems();
+
+	//print table layout
+	// Set the width for each column
+	constexpr int nameWidth{ 30 };
+	constexpr int codeWidth{ 30 };
+	constexpr int qtaWidth{ 15 };
+	constexpr int priceWidth{ 10 };
+
+	// Print header
+	//stdleft aligns data, setw gives a "column space"
+	std::cout << std::left << std::setw(nameWidth) << "Name"
+		<< std::setw(codeWidth) << "Code"
+		<< std::setw(qtaWidth) << "Quantity"
+		<< std::setw(priceWidth) << "Price"
+		<< '\n';
+
+	// Print a separator
+	std::cout << std::string(nameWidth - 1, '-') << " "
+		<< std::string(codeWidth - 1, '-') << " "
+		<< std::string(qtaWidth - 1, '-') << " "
+		<< std::string(priceWidth, '-')
+		<< '\n';
+
+	TreeNode<storageItemSpace::storageItem>::orderedPrint(treeRootPntr.get());
 }

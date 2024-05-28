@@ -5,6 +5,23 @@
 
 using namespace storageItemSpace;
 
+//storageItem------------------------------
+//Cout overload
+std::ostream& operator<<(std::ostream& os, const storageItemSpace::storageItem& si) {
+	// Set the width for each column
+	constexpr int nameWidth{ 30 };
+	constexpr int codeWidth{ 30 };
+	constexpr int qtaWidth{ 15 };
+	constexpr int priceWidth{ 10 };
+	os << std::left << std::setw(nameWidth) << si.name
+		<< std::setw(codeWidth) << si.code
+		<< std::setw(qtaWidth) << si.qta
+		<< std::setw(priceWidth) << si.price;
+
+	return os;
+};
+
+//StorageItemContainer---------------------
 //MOVE CTOR
 StorageItemContainer::StorageItemContainer(std::vector<storageItemSpace::storageItem>&& data) :_data{ std::move(data) } {}
 //MOVE ASSIGN
@@ -13,7 +30,7 @@ StorageItemContainer& StorageItemContainer::operator=(std::vector<storageItem>&&
 	//to allow conc
 	return *this;
 }
-//we use & for storageItems to pass the reference and not a copy
+
 void StorageItemContainer::printStorageItems()
 {
 	// Set the width for each column
