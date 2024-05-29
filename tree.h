@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <optional>
 #include "storageItem.h"
+#include "utils.h"
 
 template <typename T>
 class TreeNode {
@@ -71,32 +72,20 @@ public:
 	}
 	//METHODS
 	//Print the tree in order using ordered deep search
-	/*
-		ex: if we have R:5 lc:3 rc:4
-
-		- we check if lc exists
-		- yes, call the fn passing lc
-		- we check if there's a child
-		- no so we print ourself -> 3
-		- we go back to 5
-		- we check if rc exists
-		- yes, call the fn passing rc
-		- we check if there's a child
-		- no so we print ourself -> 4
-		- we go back to 5
-		- ifs ended, we print ourself -> 5
-	*/
 	static void orderedPrint(TreeNode<T>* currNode) {
-		//if there's a sx child we go there
-		if (currNode->_lChild) {
+		//if no lchild we print becuase we are lesser then our r child
+		if (currNode->_lChild == nullptr) {
+			std::cout << *(currNode->_self) << '\n';
+		} else if (currNode->_lChild) {
 			orderedPrint(currNode->_lChild);
+			//we print because there shouldnt be anything lesser then us
+			std::cout << *(currNode->_self) << '\n';
 		}
-		//if there's a sx child we go there
+
+		//if there's a rchild we go there
 		if (currNode->_rChild) {
 			orderedPrint(currNode->_rChild);
 		}
-		//in the end we printourselfs
-		std::cout << *(currNode->_self) << '\n';
 	}
 };
 
@@ -121,11 +110,9 @@ std::unique_ptr<TreeNode<T>> makeTreeFromVect(const std::vector<T>& rootElemVect
 		auto& parMemberField{ parentForElem->getSelf()->*memberField };
 		auto& childMemberField{ currElemRef.*memberField };
 
-		//TODO - string fileds need to be confronted with .compare which gives < 0 if smaller 
-		//		 i should make a fn to confront with specializations for string
 		//congratulations! it's a right child!
-		if (parMemberField > childMemberField) {
-			parentForElem->setLChild(new TreeNode<T>{ &currElemRef }); //se lo passiamo cosi non muore???
+		if (isBiggerThen(parMemberField, childMemberField)) {
+			parentForElem->setLChild(new TreeNode<T>{ &currElemRef });
 		}
 		else {
 			//congratulations! it's a left child!
@@ -149,7 +136,7 @@ TreeNode<T>* getParent(TreeNode<T>* currParent, MemberField T::* confrontMemberF
 		parent's right child, othwerwise we do next routine
 		mirrored for the left child
 	*/
-	if (*(currParentSelf).*confrontMemberField > child.*confrontMemberField) {
+	if (isBiggerThen(*(currParentSelf).*confrontMemberField, child.*confrontMemberField)) {
 		TreeNode<T>* currLChild{ currParent->getLChild() };
 		if (currLChild) {
 			return getParent(currLChild, confrontMemberField, child);

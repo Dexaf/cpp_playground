@@ -86,3 +86,9 @@ bool isValidChoice(const std::vector<int>& validChoices, const int& choice) {
 	//to find choice, if not found we get .end() hence false [as per !=]
 	return std::find(validChoices.begin(), validChoices.end(), choice) != validChoices.end();
 }
+
+using stringFromClass = std::basic_string<char, struct std::char_traits<char>, class std::allocator<char> >;
+
+bool isBiggerThen(const stringFromClass& param1, const stringFromClass& param2) {
+	return param1.compare(param2) > 0;
+}
